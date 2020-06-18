@@ -8,10 +8,10 @@ import com.hansandroid.simplenotes.domain.model.NoteModel
 
 class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    private val mTitleTextView by lazy { itemView.findViewById(R.id.note_title) as TextView }
+    private val mNoteTextView by lazy { itemView.findViewById(R.id.note_text) as TextView }
 
     fun bind(noteModel: NoteModel) {
-        mTitleTextView.text = noteModel.noteText
+        mNoteTextView.text = noteModel.noteText
     }
 
 }

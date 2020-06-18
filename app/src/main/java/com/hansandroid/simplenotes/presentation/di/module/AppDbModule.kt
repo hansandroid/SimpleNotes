@@ -6,6 +6,7 @@ import com.hansandroid.simplenotes.data.NoteModelMapperImpl
 import com.hansandroid.simplenotes.data.NoteRepositoryImpl
 import com.hansandroid.simplenotes.data.createNoteDao
 import com.hansandroid.simplenotes.data.repository.NoteRepository
+import com.hansandroid.simplenotes.presentation.di.PerApplication
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -13,15 +14,15 @@ import javax.inject.Singleton
 @Module
 class AppDbModule {
 
-    @Singleton
+    @PerApplication
     @Provides
     fun provideNoteDao(context: Context) = createNoteDao(context)
 
-    @Singleton
+    @PerApplication
     @Provides
     fun provideNoteModelMapper() = NoteModelMapperImpl()
 
-    @Singleton
+    @PerApplication
     @Provides
     fun provideNoteRepository(noteDao: NoteDao, mapper: NoteModelMapperImpl): NoteRepository = NoteRepositoryImpl(noteDao, mapper)
 
