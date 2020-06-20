@@ -1,9 +1,8 @@
 package com.hansandroid.simplenotes.domain.usecases
 
-import com.hansandroid.simplenotes.domain.model.NoteModel
 import com.hansandroid.simplenotes.data.repository.NoteRepository
+import com.hansandroid.simplenotes.domain.model.NoteModel
 import io.reactivex.Completable
-import java.lang.IllegalArgumentException
 
 class EditNoteUseCase(private val repository: NoteRepository) {
 

@@ -7,7 +7,7 @@ abstract class BasePresenter<V: BaseView> : MvpPresenter {
     protected val mDisposable: CompositeDisposable = CompositeDisposable()
     protected var mView: V? = null
 
-    fun start(view: V) {
+    fun attachView(view: V) {
         mView = view
     }
 

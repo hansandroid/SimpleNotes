@@ -9,9 +9,7 @@ import io.reactivex.Single
 class NoteRepositoryImpl(private val noteDao: NoteDao,
                          private val mapper: NoteModelMapperImpl) :
     NoteRepository {
-    override fun insertOrUpdate(note: NoteModel): Completable = Completable.fromAction { noteDao.insertOrUpdate(mapper.toEntity(
-        NoteModel()
-    )) }
+    override fun insertOrUpdate(note: NoteModel): Completable = Completable.fromAction { noteDao.insertOrUpdate(mapper.toEntity(note)) }
 
     override fun delete(note: NoteModel): Completable = Completable.fromAction { noteDao.delete(mapper.toEntity(note)) }
 
