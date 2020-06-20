@@ -2,11 +2,13 @@ package com.hansandroid.simplenotes.presentation.presenter
 
 import com.hansandroid.simplenotes.domain.model.NoteModel
 import com.hansandroid.simplenotes.domain.usecases.AddNoteUseCase
+import com.hansandroid.simplenotes.domain.usecases.DeleteNoteUseCase
 import com.hansandroid.simplenotes.domain.usecases.EditNoteUseCase
 import com.hansandroid.simplenotes.domain.usecases.NoteDetailUseCase
 import com.hansandroid.simplenotes.presentation.mvp.BasePresenter
 import com.hansandroid.simplenotes.presentation.mvp.BaseView
 import com.hansandroid.simplenotes.presentation.view.interfaces.AddNoteContract
+import com.hansandroid.simplenotes.presentation.view.interfaces.DeleteNoteContract
 import com.hansandroid.simplenotes.presentation.view.interfaces.EditNoteContract
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -14,9 +16,10 @@ import javax.inject.Inject
 
 class NoteDetailPresenter @Inject constructor(private val addNoteUseCase: AddNoteUseCase,
                                               private val editNoteUseCase: EditNoteUseCase,
-                                              private val noteDetailUseCase: NoteDetailUseCase) : BasePresenter<NoteDetailPresenter.View>() {
+                                              private val noteDetailUseCase: NoteDetailUseCase,
+                                              private val deleteNoteUseCase: DeleteNoteUseCase) : BasePresenter<NoteDetailPresenter.View>() {
 
-    interface View : BaseView, AddNoteContract, EditNoteContract
+    interface View : BaseView, AddNoteContract, EditNoteContract, DeleteNoteContract
 
     fun addNote(noteText: String) {
         mDisposable.add(addNoteUseCase.add(NoteModel(noteText = noteText))
@@ -37,6 +40,13 @@ class NoteDetailPresenter @Inject constructor(private val addNoteUseCase: AddNot
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ mView?.onEditNoteSuccess() }, this::onEditNoteError)))
+    }
+
+    fun deleteNote(noteModel: NoteModel) {
+        mDisposable.add(deleteNoteUseCase.delete(noteModel)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ mView?.onDeleteNoteSuccess() }, { mView?.onDeleteNoteError(it) }))
     }
 
     private fun onAddNoteError(throwable: Throwable) {

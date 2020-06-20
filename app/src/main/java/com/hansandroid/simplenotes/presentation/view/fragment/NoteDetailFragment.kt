@@ -50,7 +50,11 @@ class NoteDetailFragment : Fragment(), NoteDetailPresenter.View {
     override fun onPause() {
         super.onPause()
         if (mNoteModel != null) {
-            mPresenter.editNote(mNoteModel!!.id, note_text.text.toString())
+            if (note_text.text.toString().isNotEmpty()) {
+                mPresenter.editNote(mNoteModel!!.id, note_text.text.toString())
+            } else {
+                mPresenter.deleteNote(mNoteModel!!)
+            }
         } else {
             mPresenter.addNote(note_text.text.toString())
         }
@@ -71,6 +75,7 @@ class NoteDetailFragment : Fragment(), NoteDetailPresenter.View {
 
     override fun onNoteValidationFailed() {
         Log.e(TAG, "Note validation failed...")
+        mNoteModel?.let { mPresenter.deleteNote(it) }
     }
 
     override fun onAddNoteError(throwable: Throwable) {
@@ -83,6 +88,14 @@ class NoteDetailFragment : Fragment(), NoteDetailPresenter.View {
 
     override fun onNoteLookupError(throwable: Throwable) {
         Log.e(TAG, "On note lookup error: ${throwable.message}")
+    }
+
+    override fun onDeleteNoteSuccess() {
+        Log.d(TAG, "Delete note success")
+    }
+
+    override fun onDeleteNoteError(throwable: Throwable) {
+        Log.e(TAG, "Delete note error: ${throwable.message}")
     }
 
     companion object {
